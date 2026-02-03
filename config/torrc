@@ -1,0 +1,28 @@
+# General Info
+Nickname      DerailFlintPaving
+ContactInfo   m.home.arpa+tor@pm.me
+DataDirectory /var/lib/tor
+
+# Connection Ports
+ORPort        9001
+DirPort       9030
+SocksPort     0.0.0.0:9050  # Bind to all interfaces inside container to allow access
+MetricsPort   0.0.0.0:9151  # Exposes relay stats for Prometheus/Monitoring
+
+# Security for Ports
+# Only allow the local docker network or host to see metrics
+MetricsPortPolicy accept 127.0.0.1
+MetricsPortPolicy accept 172.16.0.0/12
+MetricsPortPolicy reject *
+
+# Bandwidth Limits (50Mbps = 6250 KBytes)
+BandwidthRate 6250 KBytes
+BandwidthBurst 9375 KBytes
+
+# Relay Type
+ExitPolicy reject *:*
+IPv6Exit 0
+
+# Performance
+AvoidDiskWrites 1
+MaxMemInQueues 1 GB

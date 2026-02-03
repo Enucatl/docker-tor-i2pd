@@ -1,0 +1,68 @@
+services:
+  tor:
+    image: dockurr/tor:latest
+    restart: unless-stopped
+    # Separate network for isolation
+    networks:
+      - tor
+    ports:
+      - "9001:9001"        # Public ORPort
+      - "9030:9030"        # Public DirPort
+      - "127.0.0.1:9050:9050" # Local SOCKS Proxy (Host only)
+      - "127.0.0.1:9151:9151" # Local Metrics (Host only)
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 32768
+    cpuset: "1"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'     # Limit to 50% of one CPU core
+          memory: 1.5G  # Hard cap for the container
+    # Security: Drop all root capabilities
+    cap_drop:
+      - ALL
+    # Tor only needs to bind to the network
+    cap_add:
+      - NET_BIND_SERVICE
+    volumes:
+      - tor:/var/lib/tor
+      - ./config/torrc:/etc/tor/torrc
+
+  i2pd:
+    image: purplei2p/i2pd:latest
+    restart: always
+    networks:
+      - i2pd
+    ports:
+      - "10001:10001/udp" # Replace with your preferred I2P port
+      - "10001:10001/tcp"
+      - "127.0.0.1:7070:7070"
+      - "127.0.0.1:4444:4444"
+      - "127.0.0.1:4447:4447"
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 32768
+    cpuset: "2,3" # Pin I2Pd to cores 3 and 4 (since it is multi-threaded)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 800M        # i2pd is leaner than Tor
+    cap_drop:
+      - ALL
+    volumes:
+      - i2pd:/home/i2pd/data
+      - ./config/i2pd.conf:/home/i2pd/data/i2pd.conf
+
+networks:
+  tor:
+    enable_ipv6: true
+  i2pd:
+    enable_ipv6: true
+
+volumes:
+  tor:
+  i2pd:
