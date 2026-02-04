@@ -1,10 +1,11 @@
 # General Info
 Nickname      DerailFlintPaving
-ContactInfo   m.home.arpa+tor@pm.me
+ContactInfo   M <m.home.arpa+tor AT pm dot me>
 DataDirectory /var/lib/tor
 
 # Connection Ports
 ORPort        9001
+Address       tor.enucatl.com
 DirPort       9030
 SocksPort     0.0.0.0:9050  # Bind to all interfaces inside container to allow access
 MetricsPort   0.0.0.0:9151  # Exposes relay stats for Prometheus/Monitoring
