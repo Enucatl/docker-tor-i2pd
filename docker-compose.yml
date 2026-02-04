@@ -4,7 +4,8 @@ services:
     restart: unless-stopped
     # Separate network for isolation
     networks:
-      - tor
+      tor:
+        ipv6_address: ${IPV6_PREFIX}:1004::2 # Fixed IP for VyOS firewall
     ports:
       - "9001:9001"        # Public ORPort
       - "9030:9030"        # Public DirPort
@@ -34,7 +35,8 @@ services:
     image: purplei2p/i2pd:latest
     restart: always
     networks:
-      - i2pd
+      i2pd:
+        ipv6_address: ${IPV6_PREFIX}:1003::2 # Fixed IP for VyOS firewall
     ports:
       - "10001:10001/udp" # Replace with your preferred I2P port
       - "10001:10001/tcp"
@@ -60,8 +62,14 @@ services:
 networks:
   tor:
     enable_ipv6: true
+    ipam:
+      config:
+        - subnet: ${IPV6_PREFIX}:1004::/64
   i2pd:
     enable_ipv6: true
+    ipam:
+      config:
+        - subnet: ${IPV6_PREFIX}:1003::/64
 
 volumes:
   tor:
