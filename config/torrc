@@ -1,5 +1,5 @@
 # General Info
-Nickname      DerailFlintPaving
+Nickname      DerailFlint
 ContactInfo   M <m.home.arpa+tor AT pm dot me>
 DataDirectory /var/lib/tor
 
@@ -26,10 +26,6 @@ MetricsPortPolicy reject *
 
 BandwidthRate 10 MBytes
 BandwidthBurst 15 MBytes
-
-# Relay Type
-ExitPolicy reject *:*
-IPv6Exit 0
 
 # Performance
 AvoidDiskWrites 1
