@@ -6,8 +6,8 @@ services:
     networks:
       tor:
     ports:
-      - "9001:9001"        # Public ORPort
-      - "9030:9030"        # Public DirPort
+      - "9001:9001"           # Public ORPort
+      - "9030:9030"           # Public obfs4 port
       - "127.0.0.1:9050:9050" # Local SOCKS Proxy (Host only)
       - "127.0.0.1:9151:9151" # Local Metrics (Host only)
     ulimits:

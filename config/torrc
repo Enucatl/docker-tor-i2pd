@@ -3,22 +3,29 @@ Nickname      DerailFlintPaving
 ContactInfo   M <m.home.arpa+tor AT pm dot me>
 DataDirectory /var/lib/tor
 
+BridgeRelay 1
+PublishServerDescriptor bridge
+BridgeDistribution any
+
 # Connection Ports
 ORPort        9001
-Address       tor.enucatl.com
-DirPort       9030
 SocksPort     0.0.0.0:9050  # Bind to all interfaces inside container to allow access
 MetricsPort   0.0.0.0:9151  # Exposes relay stats for Prometheus/Monitoring
+Address       tor.enucatl.com
 
-# Security for Ports
+# Obfuscated Transport (obfs4)
+ServerTransportPlugin obfs4 exec /usr/bin/lyrebird
+ServerTransportListenAddr obfs4 0.0.0.0:9030
+ExtORPort auto
+
+# Security
 # Only allow the local docker network or host to see metrics
 MetricsPortPolicy accept 127.0.0.1
 MetricsPortPolicy accept 172.16.0.0/12
 MetricsPortPolicy reject *
 
-# Bandwidth Limits (50Mbps = 6250 KBytes)
-BandwidthRate 6250 KBytes
-BandwidthBurst 9375 KBytes
+BandwidthRate 10 MBytes
+BandwidthBurst 15 MBytes
 
 # Relay Type
 ExitPolicy reject *:*
