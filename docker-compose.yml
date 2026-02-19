@@ -36,8 +36,8 @@ services:
     networks:
       i2pd:
     ports:
-      - "10001:10001/udp" # Replace with your preferred I2P port
-      - "10001:10001/tcp"
+      - "11001:11001/udp"
+      - "11001:11001/tcp"
       - "127.0.0.1:7070:7070"
       - "127.0.0.1:4444:4444"
       - "127.0.0.1:4447:4447"
